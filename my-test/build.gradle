@@ -10,6 +10,7 @@ repositories {
 }
 
 dependencies {
+    implementation project(path: ':spring-orm')
     compile(project(":spring-context"))
     compile(project(":spring-beans"))
     compile(project(":spring-core"))

@@ -61,7 +61,7 @@ public class DefaultResourceLoader implements ResourceLoader {
 	 * at the time of this ResourceLoader's initialization.
 	 * @see java.lang.Thread#getContextClassLoader()
 	 */
-	public DefaultResourceLoader() {
+         	public DefaultResourceLoader() {
 		this.classLoader = ClassUtils.getDefaultClassLoader();
 	}
 

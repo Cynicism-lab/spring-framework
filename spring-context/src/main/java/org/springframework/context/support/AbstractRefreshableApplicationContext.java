@@ -117,6 +117,8 @@ public abstract class AbstractRefreshableApplicationContext extends AbstractAppl
 	 * bean factory, shutting down the previous bean factory (if any) and
 	 * initializing a fresh bean factory for the next phase of the context's lifecycle.
 	 */
+	//此实现执行此上下文的基础bean工厂的实际刷新，关闭先前的bean工厂（如果有）并初始化上一个生命周期的下一阶段的新bean工厂。
+	//经过debug，最后从refreshBeanFactory()方法返回后，this也就是AbstractRefreshableApplicationContext实例对象
 	@Override
 	protected final void refreshBeanFactory() throws BeansException {
 		if (hasBeanFactory()) {
@@ -124,9 +126,13 @@ public abstract class AbstractRefreshableApplicationContext extends AbstractAppl
 			closeBeanFactory();
 		}
 		try {
+			// 创建一个新bean工厂，这里的DefaultListableBeanFactory就是前面笔者将的Spring核心类，这个类真的很重要！
 			DefaultListableBeanFactory beanFactory = createBeanFactory();
+			//为了序列化指定ID，如果需要的话，让这个BeanFactory从ID反序列化掉BeanFactory对象
 			beanFactory.setSerializationId(getId());
+			//定制beanFactory，设置相关属性，包括是否允许覆盖同名称的不同定义的对象以及循环依赖以及设置@Autowired和@Qualifier注解解析器QualifierAnnotationAutowireCandidateResolver
 			customizeBeanFactory(beanFactory);
+			//加载bean定义信息，这一步实际上就从XML配置文件里的bean信息给读取到了Factory里了。
 			loadBeanDefinitions(beanFactory);
 			this.beanFactory = beanFactory;
 		}

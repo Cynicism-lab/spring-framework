@@ -218,9 +218,10 @@ public abstract class AbstractBeanDefinitionReader implements BeanDefinitionRead
 		}
 
 		if (resourceLoader instanceof ResourcePatternResolver) {
-			// Resource pattern matching available.
+			// 资源模式匹配可用
 			try {
 				Resource[] resources = ((ResourcePatternResolver) resourceLoader).getResources(location);
+				// 加载bean定义信息
 				int count = loadBeanDefinitions(resources);
 				if (actualResources != null) {
 					Collections.addAll(actualResources, resources);
@@ -236,8 +237,9 @@ public abstract class AbstractBeanDefinitionReader implements BeanDefinitionRead
 			}
 		}
 		else {
-			// Can only load single resources by absolute URL.
+			// 只能通过绝对URL加载单个资源
 			Resource resource = resourceLoader.getResource(location);
+			// 加载bean定义信息
 			int count = loadBeanDefinitions(resource);
 			if (actualResources != null) {
 				actualResources.add(resource);
@@ -254,6 +256,7 @@ public abstract class AbstractBeanDefinitionReader implements BeanDefinitionRead
 		Assert.notNull(locations, "Location array must not be null");
 		int count = 0;
 		for (String location : locations) {
+			// 继续跳转加载Bean，选择不同的资源匹配模式
 			count += loadBeanDefinitions(location);
 		}
 		return count;

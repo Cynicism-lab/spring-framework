@@ -134,13 +134,21 @@ public class ClassPathXmlApplicationContext extends AbstractXmlApplicationContex
 	 * @throws BeansException if context creation failed
 	 * @see #refresh()
 	 */
+	/*
+	    使用给定的父类容器创建新的ClassPathXmlApplicationContext，然后从给定Xml文件加载定义的Bean
+	    加载所有bean定义并且创建所有的单例，在进一步配置上下文后调用refresh。换句话说xml文件的读取
+	    bean的创建和实例化都是在refresh()方法中进行的
+	    refresh()函数中包含了几乎所有的ApplicationContext中提供的全部功能。
+	 */
 	public ClassPathXmlApplicationContext(
 			String[] configLocations, boolean refresh, @Nullable ApplicationContext parent)
 			throws BeansException {
-
+		// 使用给定的父类容器(AbstractApplicationContext)创建新的ClassPathXmlApplicationContext
 		super(parent);
+		// 设置配置路径
 		setConfigLocations(configLocations);
 		if (refresh) {
+			// Spring容器初始化，标志IOC容器正式启动
 			refresh();
 		}
 	}

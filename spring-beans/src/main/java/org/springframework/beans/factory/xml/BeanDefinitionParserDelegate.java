@@ -411,6 +411,7 @@ public class BeanDefinitionParserDelegate {
 	 * {@link org.springframework.beans.factory.parsing.ProblemReporter}.
 	 */
 	@Nullable
+	// 解析bean定义本身，而不考虑名称或别名，如果解析期间出错则返回null。
 	public BeanDefinitionHolder parseBeanDefinitionElement(Element ele, @Nullable BeanDefinition containingBean) {
 		String id = ele.getAttribute(ID_ATTRIBUTE);
 		String nameAttr = ele.getAttribute(NAME_ATTRIBUTE);
@@ -433,7 +434,7 @@ public class BeanDefinitionParserDelegate {
 		if (containingBean == null) {
 			checkNameUniqueness(beanName, aliases, ele);
 		}
-
+		//终于，这里要解析beanDefinition了
 		AbstractBeanDefinition beanDefinition = parseBeanDefinitionElement(ele, beanName, containingBean);
 		if (beanDefinition != null) {
 			if (!StringUtils.hasText(beanName)) {
@@ -512,6 +513,7 @@ public class BeanDefinitionParserDelegate {
 		}
 
 		try {
+			// 创建BeanDefinition
 			AbstractBeanDefinition bd = createBeanDefinition(className, parent);
 
 			parseBeanDefinitionAttributes(ele, beanName, containingBean, bd);
@@ -520,8 +522,9 @@ public class BeanDefinitionParserDelegate {
 			parseMetaElements(ele, bd);
 			parseLookupOverrideSubElements(ele, bd.getMethodOverrides());
 			parseReplacedMethodSubElements(ele, bd.getMethodOverrides());
-
+			//通过构造器解析参数值
 			parseConstructorArgElements(ele, bd);
+			//通过property的value解析值吗，本文的程序xml就是通过property属性设置bean的值的，最终被这一方法所解析出来。
 			parsePropertyElements(ele, bd);
 			parseQualifierElements(ele, bd);
 
@@ -709,6 +712,7 @@ public class BeanDefinitionParserDelegate {
 		for (int i = 0; i < nl.getLength(); i++) {
 			Node node = nl.item(i);
 			if (isCandidateElement(node) && nodeNameEquals(node, PROPERTY_ELEMENT)) {
+				//解析出参数值来，这里就真正的讲age的23，和name的bruis值解析出来并防止在一个组装的类里面存放着。因为这里有两个bean，所以要循环调用两次parsePropertyElement()方法
 				parsePropertyElement((Element) node, bd);
 			}
 		}
@@ -852,6 +856,7 @@ public class BeanDefinitionParserDelegate {
 			PropertyValue pv = new PropertyValue(propertyName, val);
 			parseMetaElements(ele, pv);
 			pv.setSource(extractSource(ele));
+			//就是这一步，将K为age、name，值分别为23、bruis的KV对存放在了Spring容器里。
 			bd.getPropertyValues().addPropertyValue(pv);
 		}
 		finally {
