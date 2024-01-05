@@ -61,13 +61,13 @@ import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
  */
 public class XmlWebApplicationContext extends AbstractRefreshableWebApplicationContext {
 
-	/** Default config location for the root context. */
+//	默认读取Spring配置文件的根路径，如果指定其他配置文件，则从这个默认的根路径读取
 	public static final String DEFAULT_CONFIG_LOCATION = "/WEB-INF/applicationContext.xml";
 
-	/** Default prefix for building a config location for a namespace. */
+//	默认的配置文件位置在/WEB-INF/目录下
 	public static final String DEFAULT_CONFIG_LOCATION_PREFIX = "/WEB-INF/";
 
-	/** Default suffix for building a config location for a namespace. */
+//	默认的配置文件后缀.xml文件
 	public static final String DEFAULT_CONFIG_LOCATION_SUFFIX = ".xml";
 
 
