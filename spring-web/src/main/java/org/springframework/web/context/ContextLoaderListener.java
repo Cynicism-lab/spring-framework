@@ -102,6 +102,7 @@ public class ContextLoaderListener extends ContextLoader implements ServletConte
 	@Override
 	public void contextInitialized(ServletContextEvent event) {
 		// 2. 与Web MVC相关的上下文应用（WebApplicationContext）来保存控制器（DispatcherServlet）需要的MVC对象，作为根上下文的子上下文，构成一个层次化的上下文体系
+		// 传入参数为启动的servlet容器
 		initWebApplicationContext(event.getServletContext());
 	}
 

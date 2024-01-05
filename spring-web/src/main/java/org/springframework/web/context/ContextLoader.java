@@ -136,9 +136,12 @@ public class ContextLoader {
 	private static final Properties defaultStrategies;
 
 	static {
-		// Load default strategy implementations from properties file.
-		// This is currently strictly internal and not meant to be customized
-		// by application developers.
+//		建一个 ClassPathResource 对象，同时把值为 ContextLoader.properties 的一个常量作为参数传入。
+//		易知ContextLoader.properties 文件与 ContextLoader 类是在同一个目录下的；ContextLoader.properties 文件内容如下
+//		org.springframework.web.context.WebApplicationContext= org.springframework.web.context.support.XmlWebApplicationContext
+//
+//		因此可知Spring默认初始化的是 XmlWebApplicationContext 容器
+//		得到一个 Properties 对象，后面将根据类名来创建对应的 ApplicationContext 容器
 		try {
 			ClassPathResource resource = new ClassPathResource(DEFAULT_STRATEGIES_PATH, ContextLoader.class);
 			defaultStrategies = PropertiesLoaderUtils.loadProperties(resource);
@@ -292,6 +295,7 @@ public class ContextLoader {
 					configureAndRefreshWebApplicationContext(cwac, servletContext);
 				}
 			}
+			// 6. 将已经完成初始化的XmlWebApplicationContext容器注册到servletContext中去
 			servletContext.setAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE, this.context);
 
 			ClassLoader ccl = Thread.currentThread().getContextClassLoader();
